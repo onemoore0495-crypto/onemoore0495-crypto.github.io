@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RWLab — Studio Aplikasi Android oleh Ridwan</title>
+<meta name="description" content="RWLab adalah studio aplikasi Android satu orang. Dibangun langsung dari ponsel, dari Palembang. Aplikasi nyata di Google Play.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14110E; --bg2:#1B1712; --card:#211C16;
+    --ink:#F3ECDF; --muted:#A89A85; --faint:#6B6051;
+    --accent:#E8A33D; --accent2:#36C77B;
+    --line:rgba(243,236,223,.10);
+    --line2:rgba(243,236,223,.06);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'Spline Sans',sans-serif; line-height:1.6;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  /* blueprint grid texture */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(var(--line2) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line2) 1px,transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 40%,transparent 100%);
+    -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 40%,transparent 100%);
+  }
+  .wrap{position:relative; z-index:1; max-width:920px; margin:0 auto; padding:0 22px}
+  a{color:inherit; text-decoration:none}
+
+  /* nav */
+  nav{display:flex; align-items:center; justify-content:space-between; padding:26px 0 8px}
+  .brand{display:flex; align-items:center; gap:11px; font-family:'Fraunces',serif; font-weight:900; font-size:1.32rem; letter-spacing:-.01em}
+  .mark{
+    width:38px;height:38px;border-radius:10px;flex:none;
+    background:linear-gradient(135deg,var(--accent),#C9821E);
+    display:grid;place-items:center; color:#1A1409; font-family:'Fraunces',serif; font-weight:900; font-size:1.05rem;
+    box-shadow:0 6px 22px rgba(232,163,61,.28);
+  }
+  .navlink{color:var(--muted); font-size:.9rem; font-weight:500}
+  .navlink:hover{color:var(--ink)}
+
+  /* hero */
+  header{padding:64px 0 30px}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px; font-size:.78rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:22px;
+    opacity:0; animation:rise .7s .05s forwards;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);box-shadow:0 0 0 4px rgba(54,199,123,.16)}
+  h1{
+    font-family:'Fraunces',serif; font-weight:900; font-size:clamp(2.6rem,9vw,4.6rem);
+    line-height:.98; letter-spacing:-.02em; margin-bottom:24px;
+  }
+  h1 em{font-style:italic; color:var(--accent)}
+  .lead{font-size:clamp(1.05rem,2.6vw,1.25rem); color:var(--muted); max-width:34ch}
+  .hero-line{opacity:0; animation:rise .8s forwards}
+  .l1{animation-delay:.12s}.l2{animation-delay:.22s}
+  .cta{display:flex; flex-wrap:wrap; gap:13px; margin-top:34px; opacity:0; animation:rise .8s .32s forwards}
+  .btn{
+    display:inline-flex; align-items:center; gap:9px; padding:13px 20px; border-radius:12px;
+    font-weight:600; font-size:.95rem; transition:transform .15s ease, box-shadow .2s ease;
+  }
+  .btn-primary{background:var(--accent); color:#1A1409; box-shadow:0 8px 24px rgba(232,163,61,.25)}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 12px 30px rgba(232,163,61,.35)}
+  .btn-ghost{border:1px solid var(--line); color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--accent); transform:translateY(-2px)}
+
+  /* section heading */
+  .sec{padding:46px 0; border-top:1px solid var(--line2)}
+  .kicker{font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); font-weight:600; margin-bottom:14px}
+  .sec h2{font-family:'Fraunces',serif; font-weight:900; font-size:clamp(1.7rem,5vw,2.4rem); letter-spacing:-.01em; line-height:1.05; margin-bottom:20px}
+
+  /* story */
+  .story p{color:var(--muted); font-size:1.06rem; margin-bottom:16px; max-width:62ch}
+  .story strong{color:var(--ink); font-weight:600}
+  .pull{
+    font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+    font-size:clamp(1.25rem,4vw,1.7rem); line-height:1.3; color:var(--ink);
+    border-left:3px solid var(--accent); padding-left:20px; margin:26px 0; max-width:40ch;
+  }
+
+  /* apps */
+  .apps{display:grid; grid-template-columns:1fr; gap:14px}
+  @media(min-width:620px){.apps{grid-template-columns:1fr 1fr}}
+  .app{
+    background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px;
+    transition:transform .18s ease, border-color .2s ease; position:relative; overflow:hidden;
+  }
+  .app:hover{transform:translateY(-3px); border-color:rgba(232,163,61,.4)}
+  .app-top{display:flex; align-items:center; gap:13px; margin-bottom:12px}
+  .app-ic{width:46px;height:46px;border-radius:12px;flex:none;display:grid;place-items:center;font-size:1.4rem}
+  .app-ic.green{background:linear-gradient(135deg,#1f3a2e,#0f2a1d); box-shadow:inset 0 0 0 1px rgba(54,199,123,.3)}
+  .app-ic.amber{background:linear-gradient(135deg,#3a2c14,#241a0c); box-shadow:inset 0 0 0 1px rgba(232,163,61,.3)}
+  .app-ic.blue{background:linear-gradient(135deg,#16283f,#0e1b2c); box-shadow:inset 0 0 0 1px rgba(96,165,250,.3)}
+  .app-ic.pink{background:linear-gradient(135deg,#3a1f2c,#241019); box-shadow:inset 0 0 0 1px rgba(244,114,182,.3)}
+  .app-ic.violet{background:linear-gradient(135deg,#2a1f3f,#1a132c); box-shadow:inset 0 0 0 1px rgba(167,139,250,.3)}
+  .app-ic.slate{background:linear-gradient(135deg,#26262b,#16161a); box-shadow:inset 0 0 0 1px rgba(148,163,184,.3)}
+  .app h3{font-size:1.08rem; font-weight:700; letter-spacing:-.01em}
+  .app .role{font-size:.82rem; color:var(--faint)}
+  .app p{font-size:.92rem; color:var(--muted); margin-bottom:14px}
+  .badge{
+    display:inline-flex; align-items:center; gap:6px; font-size:.72rem; font-weight:600;
+    padding:5px 10px; border-radius:20px; letter-spacing:.02em;
+  }
+  .b-live{background:rgba(54,199,123,.14); color:#5BD99A}
+  .b-soon{background:rgba(232,163,61,.14); color:var(--accent)}
+  .b-port{background:rgba(148,163,184,.12); color:#A9B4C2}
+  .app .open{font-size:.82rem; color:var(--accent); font-weight:600; float:right}
+  .app .open:hover{text-decoration:underline}
+
+  /* profile card */
+  .profile{
+    background:linear-gradient(135deg,var(--bg2),var(--card));
+    border:1px solid var(--line); border-radius:20px; padding:26px;
+  }
+  .pf-head{display:flex; align-items:center; gap:16px; margin-bottom:22px}
+  .pf-avatar{
+    width:62px;height:62px;border-radius:16px;flex:none;
+    background:linear-gradient(135deg,var(--accent),#C9821E);
+    display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:900;font-size:1.5rem;color:#1A1409;
+  }
+  .pf-name{font-family:'Fraunces',serif; font-weight:900; font-size:1.4rem; line-height:1.1}
+  .pf-sub{font-size:.9rem; color:var(--muted); display:flex; align-items:center; gap:7px; margin-top:4px}
+  .verified{display:inline-flex; align-items:center; gap:5px; color:#5BD99A; font-size:.82rem; font-weight:600}
+  .pf-grid{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line2); border-radius:12px; overflow:hidden}
+  .pf-cell{background:var(--card); padding:15px 16px}
+  .pf-cell .k{font-size:.74rem; color:var(--faint); text-transform:uppercase; letter-spacing:.08em; margin-bottom:3px}
+  .pf-cell .v{font-size:.98rem; font-weight:600; color:var(--ink)}
+
+  /* tech */
+  .chips{display:flex; flex-wrap:wrap; gap:9px}
+  .chip{
+    font-size:.86rem; font-weight:500; color:var(--muted);
+    border:1px solid var(--line); border-radius:9px; padding:8px 13px; background:rgba(255,255,255,.015);
+  }
+
+  /* contact */
+  .contact .links{display:flex; flex-wrap:wrap; gap:13px; margin-top:8px}
+  .clink{
+    display:inline-flex; align-items:center; gap:10px; padding:14px 18px; border-radius:13px;
+    border:1px solid var(--line); font-weight:600; font-size:.95rem; transition:.18s;
+  }
+  .clink:hover{border-color:var(--accent); transform:translateY(-2px)}
+  .clink small{display:block; font-size:.74rem; color:var(--faint); font-weight:400}
+
+  footer{padding:40px 0 56px; border-top:1px solid var(--line2); color:var(--faint); font-size:.85rem; text-align:center}
+
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav>
+    <div class="brand"><span class="mark">R</span> RWLab</div>
+    <a class="navlink" href="#karya">Karya</a>
+  </nav>
+
+  <header>
+    <span class="eyebrow"><span class="dot"></span> Studio Aplikasi · Indonesia</span>
+    <h1 class="hero-line l1">Aplikasi nyata,<br>dibangun dari <em>ponsel.</em></h1>
+    <p class="lead hero-line l2">RWLab adalah studio satu orang. Aku menulis kode, mendesain, dan merilis aplikasi Android — semuanya langsung dari HP.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.dompetharian.app" target="_blank" rel="noopener">
+        Lihat di Google Play →
+      </a>
+      <a class="btn btn-ghost" href="https://github.com/onemoore0495-crypto" target="_blank" rel="noopener">
+        GitHub
+      </a>
+    </div>
+  </header>
+
+  <!-- STORY -->
+  <section class="sec story reveal">
+    <div class="kicker">Cerita</div>
+    <h2>Belajar sambil membangun.</h2>
+    <p>Siang hari aku bekerja sebagai <strong>tukang bangunan</strong>. Malam dan waktu luang, aku belajar koding sendiri dan membangun aplikasi — tanpa laptop, hanya dengan ponsel dan koneksi seadanya.</p>
+    <div class="pull">"Setiap baris kode adalah satu langkah menukar kerja fisik dengan keahlian baru."</div>
+    <p>Setiap aplikasi di sini aku kerjakan dari nol: ide, desain, kode, sampai publikasi resmi ke Google Play. Bukan tugas, bukan template — karya sendiri yang benar-benar berjalan.</p>
+  </section>
+
+  <!-- APPS -->
+  <section class="sec reveal" id="karya">
+    <div class="kicker">Karya</div>
+    <h2>Yang sudah dibangun.</h2>
+    <div class="apps">
+
+      <div class="app">
+        <div class="app-top">
+          <div class="app-ic green">👛</div>
+          <div><h3>Dompet Harian</h3><div class="role">Pencatat pengeluaran harian</div></div>
+        </div>
+        <p>Catat pengeluaran, pantau budget harian/mingguan/bulanan, streak kebiasaan, dan statistik per kategori.</p>
+        <span class="badge b-live">● Di Google Play · Pengujian</span>
+        <a class="open" href="https://play.google.com/store/apps/details?id=com.dompetharian.app" target="_blank" rel="noopener">Buka →</a>
+      </div>
+
+      <div class="app">
+        <div class="app-top">
+          <div class="app-ic amber">💡</div>
+          <div><h3>FaktaUnik</h3><div class="role">Fakta menarik harian</div></div>
+        </div>
+        <p>Sajian fakta unik singkat, dwibahasa (ID/EN), dengan tampilan kartu yang ringan dan rapi.</p>
+        <span class="badge b-soon">● Dalam pengembangan</span>
+      </div>
+
+      <div class="app">
+        <div class="app-top">
+          <div class="app-ic slate">📐</div>
+          <div><h3>Kalkulator Borongan</h3><div class="role">Hitung harga borongan tukang</div></div>
+        </div>
+        <p>Alat bantu menghitung estimasi biaya pekerjaan borongan — lahir dari pengalaman kerja sendiri di lapangan.</p>
+        <span class="badge b-soon">● Dalam pengembangan</span>
+      </div>
+
+      <div class="app">
+        <div class="app-top">
+          <div class="app-ic pink">💍</div>
+          <div><h3>Wedding Budget</h3><div class="role">Kalkulator anggaran pernikahan</div></div>
+        </div>
+        <p>Bantu pasangan merencanakan anggaran pernikahan, lengkap dengan fitur bagikan ringkasan sebagai gambar.</p>
+        <span class="badge b-port">● Portofolio</span>
+      </div>
+
+      <div class="app">
+        <div class="app-top">
+          <div class="app-ic violet">🌟</div>
+          <div><h3>StarGlow Live</h3><div class="role">Aplikasi live streaming</div></div>
+        </div>
+        <p>Proyek streaming lengkap: chat real-time, sistem hadiah, dan backend sendiri. Dibuat sebagai demo portofolio.</p>
+        <span class="badge b-port">● Portofolio</span>
+      </div>
+
+      <div class="app">
+        <div class="app-top">
+          <div class="app-ic blue">🕐</div>
+          <div><h3>Jam Analog Widget</h3><div class="role">Widget jam layar utama (Kotlin)</div></div>
+        </div>
+        <p>Widget jam analog kustom dengan latar transparan — eksperimen Android native menggunakan Kotlin.</p>
+        <span class="badge b-port">● Eksperimen</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROFILE -->
+  <section class="sec reveal">
+    <div class="kicker">Developer</div>
+    <h2>Tentang akun.</h2>
+    <div class="profile">
+      <div class="pf-head">
+        <div class="pf-avatar">R</div>
+        <div>
+          <div class="pf-name">RWLab</div>
+          <div class="pf-sub">Ridwan · Palembang, Indonesia</div>
+          <div class="verified">✓ Akun Google Play Developer terverifikasi</div>
+        </div>
+      </div>
+      <div class="pf-grid">
+        <div class="pf-cell"><div class="k">Platform</div><div class="v">Android</div></div>
+        <div class="pf-cell"><div class="k">Status akun</div><div class="v">Aktif & terverifikasi</div></div>
+        <div class="pf-cell"><div class="k">Cara kerja</div><div class="v">Solo, dari ponsel</div></div>
+        <div class="pf-cell"><div class="k">Fokus</div><div class="v">App keuangan & utilitas</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH -->
+  <section class="sec reveal">
+    <div class="kicker">Perkakas</div>
+    <h2>Dibangun dengan.</h2>
+    <div class="chips">
+      <span class="chip">React Native</span>
+      <span class="chip">Expo</span>
+      <span class="chip">TypeScript</span>
+      <span class="chip">Kotlin</span>
+      <span class="chip">Node.js</span>
+      <span class="chip">Git</span>
+      <span class="chip">Termux</span>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="sec contact reveal">
+    <div class="kicker">Kontak</div>
+    <h2>Mari terhubung.</h2>
+    <p style="color:var(--muted);max-width:50ch">Terbuka untuk kolaborasi, masukan, atau membantu usaha kecil yang butuh aplikasi sederhana.</p>
+    <div class="links">
+      <a class="clink" href="https://play.google.com/store/apps/details?id=com.dompetharian.app" target="_blank" rel="noopener">
+        ▶ Google Play <small>Aplikasi resmi</small>
+      </a>
+      <a class="clink" href="https://github.com/onemoore0495-crypto" target="_blank" rel="noopener">
+        ⌥ GitHub <small>Kode & proyek</small>
+      </a>
+      <a class="clink" href="mailto:ridwan.wahyudyx@gmail.com">
+        ✉ Email <small>ridwan.wahyudyx@gmail.com</small>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="yr"></span> RWLab · Dibangun dari ponsel, dengan sabar. 🛠️
+  </footer>
+
+</div>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
